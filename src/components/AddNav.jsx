@@ -7,12 +7,6 @@ export default function Addform(){
     navigate('/');
   };
 
-  /*
-      <div>
-      <button onClick={handleReturnClick}>Return</button>
-      yessssssss
-    </div> 
-  */
   return (
 
     <nav className="navbar navbar-expand -lg navbar-black bg-white d-flex justify-content-between border-bottom">
