@@ -1,12 +1,12 @@
 
 import logo from './logo.svg';
 import './App.css';
-import Productlist from './components/ProductList';
+import Productlist from './components/productlist';
 import Addform from './components/AddNav';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Form from './components/Form'; 
-import Footer from './components/Footer';
+import Navbar from './components/navbar';
+import Form from './components/form'; 
+import Footer from './components/footer';
 import { useState } from 'react';
 function App() {
 

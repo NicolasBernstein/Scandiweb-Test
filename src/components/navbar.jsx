@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Addform from './AddNav';
-import Productlist from './ProductList';
+import Productlist from './productlist';
 
 export default function Navbar() {
   const [enabled, setEnabled] = useState(true);

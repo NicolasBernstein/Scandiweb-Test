@@ -4,3 +4,7 @@
 .card-text{
     user-select: none;
 }
+.labelpos{
+    margin-left: 1.5%;
+    width: 6%;
+}
