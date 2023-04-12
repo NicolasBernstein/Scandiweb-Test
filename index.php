@@ -2,7 +2,7 @@
 
 abstract class Product {
     private $data = [];
-    public function __construct($sku, $name, $price, $productype, $attribute){
+    public function __construct($sku = null, $name = null, $price = null, $productype = null, $attribute = null){
         $this->data['sku'] = $sku;
         $this->data['name'] = $name;
         $this->data['price'] = $price;
@@ -15,8 +15,16 @@ abstract class Product {
           return $this->data[$name];
         }
         }
-      
+        public function __set($name, $value){
+            $this->data[$name] = $value;
+                  }
 }
 require_once 'product.php';
-$product = new ProductDb("test234523432", "nametest", "3", "disc", "1MB");
+//$product = new ProductDb("sku", "name", "price", "productype", "attribute");
+$product = new ProductDb();
+$product->sku = 'test234523432';
+$product->name = 'nametest';
+$product->price = '3';
+$product->productype = 'disc';
+$product->attribute = '1MB';
 $product->Create();
