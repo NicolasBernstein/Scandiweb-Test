@@ -20,7 +20,6 @@ abstract class Product {
                   }
 }
 require_once 'product.php';
-//$product = new ProductDb("sku", "name", "price", "productype", "attribute");
 $product = new ProductDb();
 $product->sku = 'test234523432';
 $product->name = 'nametest';

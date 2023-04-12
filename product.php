@@ -10,8 +10,12 @@ public function Create(){
     echo $this->price . "<br>";
     echo $this->productype . "<br>";
     echo $this->attribute . "<br>";
-  //  $con = new DbConnect();
-   // $con->connect();
+    $con = new dbConnect();
+    $con->connect();
+    $pre = mysqli_prepare($con->con, "INSERT INTO product(sku, name, price, productype, attribute) VALUES (?,?,?,?,?)");
+    $pre->bind_param("sssss", $this->sku, $this->name, $this->price, $this->productype, $this->attribute);
+    $pre->execute();
+    
 }
 
 }
