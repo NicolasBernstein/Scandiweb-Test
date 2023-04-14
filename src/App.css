@@ -5,6 +5,20 @@
     user-select: none;
 }
 .labelpos{
-    margin-left: 1.5%;
-    width: 6%;
+    width: 9%;
+    text-align: center;
+}
+
+.errormsg{
+margin-top: 1rem;
+    margin-left: 6rem;
+    color: red;
+    border: 1px solid red;
+    width: fit-content;
+    padding: 0.5rem;
+    display: none;
+}
+#footer{
+    padding: 0.3rem;
+    border: 1px solid #dee2e6;
 }

@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
 export default function ProductList(){
     const [isCheckboxactive, SetIsCheckboxactive] = useState({});
-    const [Cards, SetCard] = useState({});
     const cardsdata = [
         { id: 1, sku: "ABC123", name: "Product 1", price: 9.99, attribute: "Dimensions:" },
         { id: 2, sku: "DEF456", name: "Product 2", price: 19.99, attribute: "Size:" },
