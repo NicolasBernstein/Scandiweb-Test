@@ -1,13 +1,10 @@
 import React from "react";
 import { useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 export default function ProductList(){
     const [isCheckboxactive, SetIsCheckboxactive] = useState({});
-    const cardsdata = [
-        { id: 1, sku: "ABC123", name: "Product 1", price: 9.99, attribute: "Dimensions:" },
-        { id: 2, sku: "DEF456", name: "Product 2", price: 19.99, attribute: "Size:" },
-        { id: 3, sku: "GHI789", name: "Product 3", price: 29.99, attribute: "Weight:" },
-      ];
+    const [cardsdata, setCardsdata] = useState([]);
 
     function handleCardClick(cardId, ev) {
         SetIsCheckboxactive((prevState) => ({
@@ -16,7 +13,23 @@ export default function ProductList(){
         }));
         ev.currentTarget.querySelector('.cardcheckbox').checked = !isCheckboxactive[cardId];
       }
-
+      useEffect(() => {
+        function loadData() {
+          axios({
+            method: 'get',
+            url: 'http://localhost/scandiweb%20api/',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+          })
+          .then(response => {
+            setCardsdata(response.data);
+            console.log(response.data);
+          })    
+          .catch(error => {
+            console.log(error);
+          });
+        }
+        loadData();
+      }, []);
 return <div className='w-100 d-flex flex-row flex-wrap justify-content-start' >
     {cardsdata.map((card)=>(
 

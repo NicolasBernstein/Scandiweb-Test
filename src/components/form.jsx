@@ -81,7 +81,7 @@ if (height && width && length) {
     navigate('/')
   })    
   .catch(error => {
-    console.error(error);
+    console.log(error);
   });
 }
     return(
