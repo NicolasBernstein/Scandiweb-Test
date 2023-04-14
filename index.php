@@ -25,12 +25,31 @@ abstract class Product {
 }
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 require_once 'product.php';
+
+
 $product = new ProductDb();
-$product->sku = $_POST["sku"];
+$sku = $_POST["sku"];
+$product = $product->getproductsku($sku);
+if($product === null){
+    http_response_code(404);
+    echo "There's already a product with that SKU, please change it.";
+
+}else{
+echo "not found sku, proceed with product creation";
+$product = new ProductDb();
+$product->sku = $sku;
 $product->name = $_POST["name"];
 $product->price = $_POST["price"];
 $product->productype = $_POST["productype"];
 $product->attribute = $_POST["attribute"];
 $product->Create();
+}
+}
 
+if($_SERVER['REQUEST_METHOD'] === "GET"){
+    require_once 'product.php';
+    $productDb = new ProductDb();
+    $products = $productDb->getallproducts();
+    header('Content-Type: application/json');
+    echo json_encode($products);
 }
