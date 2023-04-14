@@ -2,8 +2,8 @@
 require_once 'index.php';
 
 class ProductDb extends Product{
-    
-public function Create(){
+
+public function Create(){   
     require_once 'db.php';
     echo $this->sku . "<br>";
     echo $this->name . "<br>";
