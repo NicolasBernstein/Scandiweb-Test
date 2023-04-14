@@ -1,11 +1,12 @@
 import { useState } from "react"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function Form(){
 const [Productype, setProductType] = useState('DVD')
 const [sku, Setsku] = useState('');
 const [name, Setname] = useState('');
 const [price, Setprice] = useState('');
-
+const navigate = useNavigate();
 
 function changediv(value){
     document.querySelector("#sizediv").style = "display: none;";
@@ -28,8 +29,6 @@ function validate(){
   var values = document.querySelectorAll(".value");
   for (var i = 0; i < values.length; i++) {
     if (values[i].value.length <= 0 && values[i].parentNode.parentNode.parentNode.style.display != "none"  ) {
-      console.log(values[i].parentNode.parentNode.parentNode.style.display);
-      console.log(values[i]);
       return values[i].name;
     }
   }
@@ -42,13 +41,11 @@ function submit(){
 var value = validate();
 var errordiv = document.querySelector(".errormsg");
 if(value != null){
-  console.log(value, " Is missing");
   errordiv.style.display = "block";
   errordiv.innerHTML =  "Please, submit required data in " + value;
   return;
 }
 errordiv.style.display = "none";
-console.log("continue")
 var formdata = {
   "sku": sku,
   "name": name,
@@ -73,6 +70,19 @@ if (height && width && length) {
     var element = document.querySelector("#size").value;
     formdata.attribute = element;
   }
+
+  axios({
+    method: 'post',
+    url: 'http://localhost/scandiweb%20api/',
+    data: new URLSearchParams(formdata),
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+})  .then(response => {
+    console.log(response.data);
+    navigate('/')
+  })    
+  .catch(error => {
+    console.error(error);
+  });
 }
     return(
         <form className="mt-4" id="product_form" onSubmit={ev =>{

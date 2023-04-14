@@ -20,7 +20,7 @@ export default function ProductList(){
 return <div className='w-100 d-flex flex-row flex-wrap justify-content-start' >
     {cardsdata.map((card)=>(
 
-<div  className='card text-white border border-dark position-relative' style={{width: 12 + "rem", marginLeft: 1.5 + "rem"}}>
+<div key={card.id}  className='card text-white border border-dark position-relative' style={{width: 12 + "rem", marginLeft: 1.5 + "rem"}}>
 <div  className= {`card-body d-flex flex-column align-items-center  ${isCheckboxactive[card.id] ? "delete-checkbox" : ""} `} onClick={(ev) => handleCardClick(card.id, ev)} >
 <input className="form-check-input position-absolute align-self-start cardcheckbox opacity-100" type="checkbox" value="" disabled></input>
     <p className="card-text text-black">SKU: {card.sku}</p>
