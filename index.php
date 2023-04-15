@@ -5,13 +5,15 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Credentials: true");       
 abstract class Product {
     private $data = [];
-    public function __construct($sku = null, $name = null, $price = null, $productype = null, $attribute = null){
+    public function __construct($sku = null, $name = null, $price = null, $productype = null, $attribute = null, $attributetype = null, $format = null){
         
         $this->data['sku'] = $sku;
         $this->data['name'] = $name;
         $this->data['price'] = $price;
         $this->data['productype'] = $productype;
         $this->data['attribute'] = $attribute;
+        $this->data['attributetype'] = $attributetype;
+        $this->data['format'] = $format;
     }
 
     public function __get($name){
@@ -23,7 +25,7 @@ abstract class Product {
             $this->data[$name] = $value;
                   }
 }
-if($_SERVER['REQUEST_METHOD'] == "POST"){
+if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["type"] === "POST"){
 require_once 'product.php';
 
 
@@ -42,6 +44,8 @@ $product->name = $_POST["name"];
 $product->price = $_POST["price"];
 $product->productype = $_POST["productype"];
 $product->attribute = $_POST["attribute"];
+$product->attributetype = $_POST["attributetype"];
+$product->format = $_POST["format"];
 $product->Create();
 }
 }
@@ -52,4 +56,12 @@ if($_SERVER['REQUEST_METHOD'] === "GET"){
     $products = $productDb->getallproducts();
     header('Content-Type: application/json');
     echo json_encode($products);
+}
+
+if($_SERVER['REQUEST_METHOD'] === "POST" && $_POST["type"] === "delete"){
+  require_once 'product.php';
+    $sku = $_POST["sku"];
+    $product = new ProductDb();
+    $product->delete($sku);
+
 }

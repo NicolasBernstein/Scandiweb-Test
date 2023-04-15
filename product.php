@@ -8,8 +8,8 @@ public function Create(){
     require_once 'db.php';
     $con = new dbConnect();
     $con->connect();
-    $pre = mysqli_prepare($con->con, "INSERT INTO product(sku, name, price, productype, attribute) VALUES (?,?,?,?,?)");
-    $pre->bind_param("sssss", $this->sku, $this->name, $this->price, $this->productype, $this->attribute);
+    $pre = mysqli_prepare($con->con, "INSERT INTO product(sku, name, price, productype, attribute, attributetype, format) VALUES (?,?,?,?,?,?,?)");
+    $pre->bind_param("sssssss", $this->sku, $this->name, $this->price, $this->productype, $this->attribute, $this->attributetype, $this->format);
     $pre->execute();
     
 }
@@ -43,6 +43,18 @@ public function getproductsku($sku){
         return $products;   
     }
 
-
+    public function delete($sku){
+        require_once 'db.php';
+        $con = new dbConnect();
+        $con->connect();
+        $pre = mysqli_prepare($con->con, "DELETE FROM product WHERE sku = ?");
+        $pre->bind_param("s", $sku);
+        $pre->execute();
+        if ($pre->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+        }
 
 }
