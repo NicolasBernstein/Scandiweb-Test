@@ -6,6 +6,8 @@ const [Productype, setProductType] = useState('DVD')
 const [sku, Setsku] = useState('');
 const [name, Setname] = useState('');
 const [price, Setprice] = useState('');
+const [attributetype, Setattributetype] = useState('Size');
+const [format, Setformat] = useState('MB');
 const navigate = useNavigate();
 
 function changediv(value){
@@ -14,11 +16,17 @@ function changediv(value){
     document.querySelector("#dimensions").style = "display: none";
   if(value == "DVD"){
     document.querySelector("#sizediv").style = "display: block;";
+    Setattributetype('Size');
+    Setformat('MB');
   }else if(value == "BOOK"){
     document.querySelector("#weightdiv").style = "display: block;";
+    Setattributetype('Weight');
+    Setformat('KG');
+
   }
   else if(value == "FURNITURE"){
 document.querySelector("#dimensions").style = "display: block";
+Setattributetype('HxWxL');
   }
 
 }
@@ -43,15 +51,18 @@ var errordiv = document.querySelector(".errormsg");
 if(value != null){
   errordiv.style.display = "block";
   errordiv.innerHTML =  "Please, submit required data in " + value;
-  return;
+  return; 
 }
 errordiv.style.display = "none";
 var formdata = {
+  "type": 'POST',
   "sku": sku,
   "name": name,
   "price": price,
   "productype": Productype,
-  "attribute": null
+  "attribute": null,
+  "attributetype": attributetype,
+  "format": format
 }
   if(Productype == "FURNITURE"){
 const height = document.querySelector("#height").value;
@@ -78,10 +89,13 @@ if (height && width && length) {
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })  .then(response => {
     console.log(response.data);
+    
     navigate('/')
   })    
   .catch(error => {
-    console.log(error);
+    console.log(error.response.data);
+    errordiv.style.display = "block";
+    errordiv.innerHTML =  error.response.data;
   });
 }
     return(

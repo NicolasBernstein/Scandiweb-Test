@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 're
 import { useState } from 'react';
 import Addform from './AddNav';
 import Productlist from './productlist';
+import axios from 'axios';
 
 export default function Navbar() {
   const [enabled, setEnabled] = useState(true);
@@ -11,12 +12,21 @@ export default function Navbar() {
 function massdelete(){
 var queryall = document.querySelectorAll(".delete-checkbox")
 queryall.forEach(el => {
-  console.log(el.parentNode);
-  el.parentNode.remove();
+var sku = el.closest('.card').getAttribute("id");
+  axios({
+    method: 'POST',
+    url: 'http://localhost/scandiweb%20api/',
+    data: new URLSearchParams({"type": 'delete', "sku": sku}),
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+})  .then(response => {
+    console.log(sku);
+    el.parentNode.remove();
+  })    
+  .catch(error => {
+    console.log(error);
+  });
 })
 }
-
-
 
 
   const handleAddClick = () => {
