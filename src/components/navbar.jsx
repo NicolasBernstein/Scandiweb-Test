@@ -19,7 +19,6 @@ var sku = el.closest('.card').getAttribute("id");
     data: new URLSearchParams({"type": 'delete', "sku": sku}),
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })  .then(response => {
-    console.log(sku);
     el.parentNode.remove();
   })    
   .catch(error => {
