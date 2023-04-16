@@ -27,6 +27,7 @@ function changediv(value){
   else if(value == "FURNITURE"){
 document.querySelector("#dimensions").style = "display: block";
 Setattributetype('HxWxL');
+Setformat('');
   }
 
 }
@@ -84,7 +85,7 @@ if (height && width && length) {
 
   axios({
     method: 'post',
-    url: 'http://localhost/scandiweb%20api/',
+    url: 'http://scandiwebtestnicolas.infinityfreeapp.com/scandiweb%20api/',
     data: new URLSearchParams(formdata),
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })  .then(response => {

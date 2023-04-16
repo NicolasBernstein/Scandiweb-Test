@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Addform from './AddNav';
 import Productlist from './productlist';
 import axios from 'axios';
-
+// previous url: 'http://localhost/scandiweb%20api/'
 export default function Navbar() {
   const [enabled, setEnabled] = useState(true);
   const location = useLocation();
@@ -15,7 +15,7 @@ queryall.forEach(el => {
 var sku = el.closest('.card').getAttribute("id");
   axios({
     method: 'POST',
-    url: 'http://localhost/scandiweb%20api/',
+    url: 'http://scandiwebtestnicolas.infinityfreeapp.com/scandiweb%20api/',
     data: new URLSearchParams({"type": 'delete', "sku": sku}),
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })  .then(response => {
