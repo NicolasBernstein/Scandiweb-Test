@@ -113,7 +113,7 @@ if (height && width && length) {
                         <div className="d-flex flex-row form-group "> 
             <label className="col-form-label labelpos" for='name'>Name</label>
             <div className="col-sm-9">
-            <input type="text" name="name" id="Name" className="value" onChange={ev => Setname(ev.target.value)} ></input>
+            <input type="text" name="name" id="name" className="value" onChange={ev => Setname(ev.target.value)} ></input>
             </div>
             </div>
 
@@ -128,7 +128,7 @@ if (height && width && length) {
             <label className="col-form-label labelpos" for='switch' >Product Type</label>
                 <div className="col-sm-9">
                 <select value={Productype} id="productType"  name="switch" className="form- value" style={{width: 12 + "rem"}}  onChange={(event) => {setProductType(event.target.value); changediv(event.target.value);}}>
-<option value={"DVD"}>DVD-disc</option>
+<option value={"DVD"}>DVD</option>
 <option value={"BOOK"}>Book</option>
 <option value={"FURNITURE"}>Furniture</option>
                 </select>

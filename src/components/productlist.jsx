@@ -33,8 +33,8 @@ return <div className='w-100 d-flex flex-row flex-wrap justify-content-start' >
     {cardsdata.length > 0 && cardsdata.map((card)=>(
 
 <div key={card.id} id={card.sku}  className='card text-white border border-dark position-relative' style={{width: 12 + "rem", marginLeft: 1.5 + "rem"}}>
-<div  className= {`card-body d-flex flex-column align-items-center  ${isCheckboxactive[card.id] ? "delete-checkbox" : ""} `} onClick={(ev) => handleCardClick(card.id, ev)} >
-<input className="form-check-input position-absolute align-self-start cardcheckbox opacity-100" type="checkbox" value="" disabled></input>
+<div  className= {`card-body d-flex flex-column align-items-center`} onClick={(ev) => handleCardClick(card.id, ev)} >
+<input className={`form-check-input position-absolute align-self-start cardcheckbox opacity-100  ${isCheckboxactive[card.id] ? "delete" : "delete-checkbox"} `} type="checkbox" value="" disabled></input>
     <p className="card-text text-black text-center productext" style={{whiteSpace: "nowrap", width: 75 + "%", fontSize: 90 + "%"}}>{card.sku}</p>
     <p className="card-text text-black productext">{card.name}</p>
     <p className="card-text text-black productext">{card.price} $</p>

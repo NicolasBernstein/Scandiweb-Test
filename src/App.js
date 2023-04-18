@@ -15,7 +15,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Productlist />} />
-        <Route path="/addproduct" element={<> <Addform /> <Form/> </>} />
+        <Route path="/add-product" element={<> <Addform /> <Form/> </>} />
       </Routes>
       <Footer/>
     </BrowserRouter>

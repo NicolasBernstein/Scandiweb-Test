@@ -3,14 +3,14 @@ import { useState } from 'react';
 import Addform from './AddNav';
 import Productlist from './productlist';
 import axios from 'axios';
-// previous url: 'http://localhost/scandiweb%20api/'
+// previous url: 'http://localhost/scandiweb%20api/' 'http://scandiwebtestnicolas.infinityfreeapp.com/scandiweb%20api/'
 export default function Navbar() {
   const [enabled, setEnabled] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
 
 function massdelete(){
-var queryall = document.querySelectorAll(".delete-checkbox")
+var queryall = document.querySelectorAll(".delete");
 queryall.forEach(el => {
 var sku = el.closest('.card').getAttribute("id");
   axios({
@@ -19,7 +19,7 @@ var sku = el.closest('.card').getAttribute("id");
     data: new URLSearchParams({"type": 'delete', "sku": sku}),
     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 })  .then(response => {
-    el.parentNode.remove();
+    el.parentNode.parentNode.remove();
   })    
   .catch(error => {
     console.log(error);
@@ -34,11 +34,11 @@ var sku = el.closest('.card').getAttribute("id");
   };
 
   return (
-    <nav className={`navbar navbar-expand -lg navbar-black bg-white d-flex justify-content-between border-bottom mb-3 ${location.pathname === '/addproduct' ? 'd-none' : ''}`}>
+    <nav className={`navbar navbar-expand -lg navbar-black bg-white d-flex justify-content-between border-bottom mb-3 ${location.pathname === '/add-product' ? 'd-none' : ''}`}>
     <p className="h1">Product list </p>
     <div className='navbar-nav ms-auto' style={{ marginRight: 2 + 'em', paddingLeft: 5 + "rem" }}>
-        <Link className='nav-link text-light text-black border border-dark' style={{ marginRight: 1 + 'em' }} onClick={handleAddClick} disabled={!enabled} to='/addproduct'>Add</Link>
-      <button className='nav-link text-light text-black border border-dark' id='delete-product-btn' onClick={massdelete}>Mass Delete</button>
+        <Link className='nav-link text-light text-black border border-dark' style={{ marginRight: 1 + 'em' }} onClick={handleAddClick} disabled={!enabled} to='/add-product'>ADD</Link>
+      <button className='nav-link text-light text-black border border-dark' id='delete-product-btn' onClick={massdelete}>MASS DELETE</button>
 <div></div>
     </div>
   </nav>
