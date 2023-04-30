@@ -14,11 +14,6 @@ abstract class Product implements ProductFactory {
         $this->data['price'] = $price;
         $this->data['productype'] = $productype;
     }
-    public function createProduct($sku, $name, $price, $params) {
-
-    }
-
-    
 
 public function __get($name){
         if(array_key_exists($name, $this->data)){
@@ -28,20 +23,14 @@ public function __get($name){
 public function __set($name, $value){
             $this->data[$name] = $value;
                   }
-   
-         
+
+                  public static function createProduct($sku, $name, $price, $params) {
+                      $product = new static($sku, $name, $price, ...$params);
+                      $product->create();
+                      return $product;
+                  }
                   
 }
 require_once 'product.php';
-
-$book = new Book("asdsadsa-dsadsad", "Arthas, el rey exanime", "30.00", "1");
-echo $book->params["weight"];
-
-$book = new DVD("asdsadsa-dsadsad", "Arthas, el rey exanime", "30.00", "5");
-echo $book->params["size"];
-
-
-$book = new Furniture("asdsadsa-dsadsad", "Arthas, el rey exanime", "30.00", "5", "7", "9");
-echo $book->params["height"];
-echo $book->params["width"];
-echo $book->params["length"];
+$bookFactory = new BookFactory();
+$book = $bookFactory->createProduct('fsafdas-fdsadf-afsdds','Book','10.99', ['weight' => '1kg']);
