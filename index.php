@@ -1,36 +1,57 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
-header("Access-Control-Allow-Methods: *");
-header("Access-Control-Allow-Credentials: true");   
-require_once 'factory.php';   
 require_once 'db.php';
-abstract class Product implements ProductFactory {
-    private $data = [];
-    public function __construct($sku = null, $name = null, $price = null, $productype = null){
-        
-        $this->data['sku'] = $sku;
-        $this->data['name'] = $name;
-        $this->data['price'] = $price;
-        $this->data['productype'] = $productype;
+require_once 'factory.php';
+abstract class Product
+{
+    // basic
+    protected $sku;
+    protected $name;
+    protected $price;
+    protected $type;
+
+    // dvd
+    protected $size;
+    // books
+    protected $weight;
+    // furniture
+    protected $height;
+    protected $width;
+    protected $length;
+
+    public function __construct($sku, $name, $price, $type, $size, $weight, $height, $width, $length)
+    {
+        $this->sku = $sku;
+        $this->name = $name;
+        $this->price = $price;
+        $this->type = $type;
+        $this->size = $size;
+        $this->weight = $weight;
+        $this->height = $height;
+        $this->width = $width;
+        $this->length = $length;
     }
 
-public function __get($name){
-        if(array_key_exists($name, $this->data)){
-          return $this->data[$name];
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
         }
-        }
-public function __set($name, $value){
-            $this->data[$name] = $value;
-                  }
-
-                  public static function createProduct($sku, $name, $price, $params) {
-                      $product = new static($sku, $name, $price, ...$params);
-                      $product->create();
-                      return $product;
-                  }
-                  
+    }
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
 }
-require_once 'product.php';
-$bookFactory = new BookFactory();
-$book = $bookFactory->createProduct('fsafdas-fdsadf-afsdds','Book','10.99', ['weight' => '1kg']);
+
+
+class DVD extends Product
+{
+}
+
+class Book extends Product
+{
+}
+
+class Furniture extends Product
+{
+}

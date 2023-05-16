@@ -1,38 +1,25 @@
 <?php
-require_once 'db.php';
-interface ProductFactory{
-    public static function createProduct($sku, $name, $price, $params);
+interface Factory
+{
+    public function CreateProduct(array $data);
 }
 
-class BookFactory implements ProductFactory {
-    public static function createProduct($sku, $name, $price, $params) {
-        $weight = $params['weight'];
-        
-        return new Book($sku, $name, $price, $params);
+class DVDFactory implements Factory
+{
+    public function CreateProduct(array $data)
+    {
     }
 }
 
-class FurnitureFactory implements ProductFactory {
-    public static function createProduct($sku, $name, $price, $params) {
-        $length = $params['length'];
-        $width = $params['width'];
-        $height = $params['height'];
-        return new Furniture($sku, $name, $price, $params);
+class BookFactory implements Factory
+{
+    public function CreateProduct(array $data)
+    {
     }
 }
-
-class DVDFactory implements ProductFactory {
-    public static function createProduct($sku, $name, $price, $params) {
-        $size = $params['size'];
-        return new DVD($sku, $name, $price, $params);
-    }
-}
-
-class ProductCreator implements ProductFactory{
-    public static function createProduct($sku, $name, $price, $params) {
-        $factory = new ProductFactory();
-        $product = $factory->createProduct($sku, $name, $price, $params);
-        $product->create();
-        return $product;
+class FurnitureFactory implements Factory
+{
+    public function CreateProduct(array $data)
+    {
     }
 }
