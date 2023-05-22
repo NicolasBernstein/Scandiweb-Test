@@ -1,4 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: *");
+header("Access-Control-Allow-Credentials: true");
 require_once 'db.php';
 require_once 'factory.php';
 const FACTORIES = [
@@ -75,6 +79,17 @@ abstract class Product
 
     public static function delete($sku)
     {
+        require_once 'db.php';
+        $con = new dbConnect();
+        $con->connect();
+        $pre = mysqli_prepare($con->con, "DELETE FROM products WHERE sku = ?");
+        $pre->bind_param("s", $sku);
+        $pre->execute();
+        if ($pre->affected_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function Addindb()
@@ -85,9 +100,6 @@ abstract class Product
         $pre = mysqli_prepare($con->con, "INSERT INTO products(sku, name, price, type, size, weight, height, width, length) VALUES (?,?,?,?,?,?,?,?,?)");
         $pre->bind_param("sssssssss", $this->sku, $this->name, $this->price, $this->type, $this->size, $this->weight, $this->height, $this->width, $this->length);
         $pre->execute();
-        echo  $this->sku;
-        echo $this->type;
-        echo $this->size;
     }
     public function __get($name)
     {
@@ -113,49 +125,30 @@ class Book extends Product
 class Furniture extends Product
 {
 }
-/*
-DVD
-$data = [
-    'sku' => 'dasdasdsa',
-    'type' => 'DVD',
-    'nombre' => 'Producto A',
-    'precio' => 12.99,
-    'size' => 10
 
-];*/
-/*
-DVD
-$data = [
-    'sku' => 'dasdasdsa',
-    'type' => 'DVD',
-    'nombre' => 'Producto A',
-    'precio' => 12.99,
-    'size' => 10
-
-];*/
-
-
-//BOOK
-/*
-$data = [
-    'sku' => 'dasdasdsa',
-    'type' => 'BOOK',
-    'nombre' => 'Producto A',
-    'precio' => 12.99,
-    'weight' => '1 kg'
-
-];
-
-
-
-$product = Product::loadFrontendProductData($data);
-*/
-$getsku = Product::getproductsku('dasdasdsa');
-//echo $getsku;
-if ($getsku == 'true') {
-    echo 'it is true';
-} else {
-    echo 'it is false';
+if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
+    $data = [
+        'sku' => $_POST['sku'],
+        'type' => $_POST['type'],
+        'name' => $_POST['name'],
+        'price' => $_POST['price'],
+        'size' => $_POST['size'],
+        'weight' => $_POST['Weight'],
+        'height' => $_POST['Height'],
+        'width' => $_POST['Width'],
+        'length' => $_POST['Length']
+    ];
+    $getsku = Product::getproductsku($data['sku']);
+    if ($getsku === 'true') {
+        return;
+    }
+    $product = Product::loadFrontendProductData($data);
 }
-//$products = Product::getallproducts();
-//echo json_encode($products);
+if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === "delete") {
+    $delete = Product::delete($_POST['sku']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $products = Product::getallproducts();
+    echo json_encode($products);
+}
