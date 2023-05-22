@@ -16,7 +16,7 @@ export default function ProductList(){
         function loadData() {
           axios({
             method: 'get',
-            url: 'http://scandiwebtestnicolas.infinityfreeapp.com/scandiweb%20api/',
+            url: 'http://localhost/scandiweb%20api/',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
           })
           .then(response => {
