@@ -140,6 +140,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
     ];
     $getsku = Product::getproductsku($data['sku']);
     if ($getsku === 'true') {
+        http_response_code(404);
+        echo "There's already a product with that SKU, please change it.";
         return;
     }
     $product = Product::loadFrontendProductData($data);
