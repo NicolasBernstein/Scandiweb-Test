@@ -11,7 +11,7 @@ class DVDFactory implements Factory
     {
         echo "hi";
         $product = new DVD($data['sku'], $data['name'], $data['price'], $data['type'], $data['size'], $data["weight"], $data['height'], $data['width'], $data['length']);
-        $product->Addindb($product);
+        $product->Addindb();
         return $product;
     }
 }
@@ -22,7 +22,7 @@ class BookFactory implements Factory
     {
         echo "hi";
         $product = new DVD($data['sku'], $data['name'], $data['price'], $data['type'], $data['size'], $data["weight"], $data['height'], $data['width'], $data['length']);
-        $product->Addindb($product);
+        $product->Addindb();
         return $product;
     }
 }
@@ -32,7 +32,7 @@ class FurnitureFactory implements Factory
     {
         echo "hi";
         $product = new DVD($data['sku'], $data['name'], $data['price'], $data['type'], $data['size'], $data["weight"], $data['height'], $data['width'], $data['length']);
-        $product->Addindb($product);
+        $product->Addindb();
         return $product;
     }
 }

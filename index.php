@@ -13,31 +13,17 @@ const FACTORIES = [
 abstract class Product
 {
     // basic
-    public $sku;
+    protected $sku;
     protected $name;
     protected $price;
     protected $type;
 
-    // dvd
-    protected $size;
-    // books
-    protected $weight;
-    // furniture
-    protected $height;
-    protected $width;
-    protected $length;
-
-    public function __construct($sku, $name, $price, $type, $size, $weight, $height, $width, $length)
+    public function __construct($sku, $name, $price, $type)
     {
         $this->sku = $sku;
         $this->name = $name;
         $this->price = $price;
         $this->type = $type;
-        $this->size = $size;
-        $this->weight = $weight;
-        $this->height = $height;
-        $this->width = $width;
-        $this->length = $length;
     }
 
 
@@ -103,27 +89,52 @@ abstract class Product
     }
     public function __get($name)
     {
-        if (array_key_exists($name, $this->data)) {
-            return $this->data[$name];
+        if (property_exists($this, $name)) {
+            return $this->$name;
         }
     }
     public function __set($name, $value)
     {
-        $this->data[$name] = $value;
+        $this->$name = $value;
     }
 }
 
 
 class DVD extends Product
 {
+    protected $size;
+
+    public function __construct($sku, $name, $price, $type,  ...$params)
+    {
+        parent::__construct($sku, $name, $price, $type, ...$params);
+        $this->size = isset($params[0]) ? $params[0] : null;
+    }
 }
 
 class Book extends Product
 {
+    protected $weight;
+
+    public function __construct($sku, $name, $price, $type,  ...$params)
+    {
+        parent::__construct($sku, $name, $price, $type, ...$params);
+        $this->weight = isset($params[1]) ? $params[1] : null;
+    }
 }
 
 class Furniture extends Product
 {
+    protected $height;
+    protected $width;
+    protected $length;
+
+    public function __construct($sku, $name, $price, $type,  ...$params)
+    {
+        parent::__construct($sku, $name, $price, $type, ...$params);
+        $this->height = isset($params[2]) ? $params[2] : null;
+        $this->width = isset($params[3]) ? $params[3] : null;
+        $this->length = isset($params[4]) ? $params[4] : null;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
