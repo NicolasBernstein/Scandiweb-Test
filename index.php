@@ -5,6 +5,7 @@ header("Access-Control-Allow-Methods: *");
 header("Access-Control-Allow-Credentials: true");
 require_once 'db.php';
 require_once 'factory.php';
+require_once 'repository.php';
 const FACTORIES = [
     'DVD' => new DVDFactory(),
     'BOOK' => new BookFactory(),
@@ -12,7 +13,6 @@ const FACTORIES = [
 ];
 abstract class Product
 {
-    // basic
     protected $sku;
     protected $name;
     protected $price;
@@ -27,75 +27,30 @@ abstract class Product
     }
 
 
-    public static function loadFrontendProductData(array $data): Product
+    public static function SaveinDb(array $data, $db, $repository): Product
     {
         $type = $data["type"];
         $fact = FACTORIES[$type];
-        return $fact->CreateProduct($data);
+        return $fact->CreateProduct($data, $db, $repository);
     }
 
-    public static function getallproducts(): array
-    {
-        $con = new dbConnect();
-        $con->connect();
-        $pre = mysqli_prepare($con->con, "SELECT * FROM products");
-        $pre->execute();
-        $result = $pre->get_result();
-        $products = [];
-        while ($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-        return $products;
-    }
 
-    public static function getproductsku($sku)
-    {
-        $con = new dbConnect();
-        $con->connect();
-        $pre = mysqli_prepare($con->con, "SELECT * FROM products WHERE sku = ?");
-        $pre->bind_param("s", $sku);
-        $pre->execute();
-        $result = $pre->get_result();
-        if ($result->num_rows === 0) {
-            return 'false';
-        } else {
-            return 'true';
-        }
-    }
 
-    public static function delete($sku)
+    public function getsku()
     {
-        require_once 'db.php';
-        $con = new dbConnect();
-        $con->connect();
-        $pre = mysqli_prepare($con->con, "DELETE FROM products WHERE sku = ?");
-        $pre->bind_param("s", $sku);
-        $pre->execute();
-        if ($pre->affected_rows > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->sku;
     }
-
-    public function Addindb()
+    public function getname()
     {
-        echo "ADDED IN DATABASE";
-        $con = new dbConnect();
-        $con->connect();
-        $pre = mysqli_prepare($con->con, "INSERT INTO products(sku, name, price, type, size, weight, height, width, length) VALUES (?,?,?,?,?,?,?,?,?)");
-        $pre->bind_param("sssssssss", $this->sku, $this->name, $this->price, $this->type, $this->size, $this->weight, $this->height, $this->width, $this->length);
-        $pre->execute();
+        return $this->name;
     }
-    public function __get($name)
+    public function getprice()
     {
-        if (property_exists($this, $name)) {
-            return $this->$name;
-        }
+        return $this->price;
     }
-    public function __set($name, $value)
+    public function getype()
     {
-        $this->$name = $value;
+        return $this->type;
     }
 }
 
@@ -104,10 +59,14 @@ class DVD extends Product
 {
     protected $size;
 
-    public function __construct($sku, $name, $price, $type,  ...$params)
+    public function __construct($sku, $name, $price, $type, $size)
     {
-        parent::__construct($sku, $name, $price, $type, ...$params);
-        $this->size = isset($params[0]) ? $params[0] : null;
+        parent::__construct($sku, $name, $price, $type, $size);
+        $this->size = $size;
+    }
+    public function getsize()
+    {
+        return $this->size;
     }
 }
 
@@ -115,10 +74,15 @@ class Book extends Product
 {
     protected $weight;
 
-    public function __construct($sku, $name, $price, $type,  ...$params)
+    public function __construct($sku, $name, $price, $type, $weight)
     {
-        parent::__construct($sku, $name, $price, $type, ...$params);
-        $this->weight = isset($params[1]) ? $params[1] : null;
+        parent::__construct($sku, $name, $price, $type, $weight);
+        $this->weight = $weight;
+    }
+
+    public function getweight()
+    {
+        return $this->weight;
     }
 }
 
@@ -128,14 +92,30 @@ class Furniture extends Product
     protected $width;
     protected $length;
 
-    public function __construct($sku, $name, $price, $type,  ...$params)
+    public function __construct($sku, $name, $price, $type, $height, $width, $length)
     {
-        parent::__construct($sku, $name, $price, $type, ...$params);
-        $this->height = isset($params[2]) ? $params[2] : null;
-        $this->width = isset($params[3]) ? $params[3] : null;
-        $this->length = isset($params[4]) ? $params[4] : null;
+        parent::__construct($sku, $name, $price, $type, $height, $width, $length);
+        $this->height = $height;
+        $this->width = $width;
+        $this->length = $length;
+    }
+    public function getheight()
+    {
+        return $this->height;
+    }
+    public function getwidth()
+    {
+        return $this->width;
+    }
+    public function getlength()
+    {
+        return $this->length;
     }
 }
+
+$db = new dbConnect();
+$db->connect();
+$repository = new Repository();
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
     $data = [
@@ -149,19 +129,33 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
         'width' => $_POST['Width'],
         'length' => $_POST['Length']
     ];
-    $getsku = Product::getproductsku($data['sku']);
+    $getsku = $repository->getproductsku($data['sku'], $db);
     if ($getsku === 'true') {
         http_response_code(404);
         echo "There's already a product with that SKU, please change it.";
         return;
     }
-    $product = Product::loadFrontendProductData($data);
+    $product = Product::SaveinDb($data, $db, $repository);
 }
 if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === "delete") {
-    $delete = Product::delete($_POST['sku']);
+    $delete = $repository->delete($_POST['sku'], $db);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $products = Product::getallproducts();
+    $products = $repository->getallproducts($db);
     echo json_encode($products);
 }
+$data = [
+    'sku' => 'adsadsadsad',
+    'type' => 'FURNITURE',
+    'name' => 'DVD',
+    'price' => '5',
+    'height' => '70',
+    'width' => '80',
+    'length' => '50'
+
+
+];
+
+//$newbook = Product::SaveinDb($data, $db, $repository);
+//$product = new DVD($data['sku'], $data['name'], $data['type'], $data['price'], $data['size']);
