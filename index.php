@@ -6,7 +6,7 @@ header("Access-Control-Allow-Credentials: true");
 require_once 'db.php';
 require_once 'factory.php';
 require_once 'repository.php';
-const FACTORIES = [
+$FACTORIES = [
     'DVD' => new DVDFactory(),
     'BOOK' => new BookFactory(),
     'FURNITURE' => new FurnitureFactory()
@@ -27,10 +27,10 @@ abstract class Product
     }
 
 
-    public static function SaveinDb(array $data, $db, $repository): Product
+    public static function SaveinDb(array $data, $db, $repository, $FACTORIES): Product
     {
         $type = $data["type"];
-        $fact = FACTORIES[$type];
+        $fact = $FACTORIES[$type];
         return $fact->CreateProduct($data, $db, $repository);
     }
 
@@ -135,23 +135,12 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === 'POST') {
         echo "There's already a product with that SKU, please change it.";
         return;
     }
-    $product = Product::SaveinDb($data, $db, $repository);
+    $product = Product::SaveinDb($data, $db, $repository, $FACTORIES);
 }
 if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === "delete") {
     $delete = $repository->delete($_POST['sku'], $db);
 }
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $products = $repository->getallproducts($db);
+    echo json_encode($products);
 }
-$data = [
-    'sku' => 'adsadsadsad',
-    'type' => 'FURNITURE',
-    'name' => 'DVD',
-    'price' => '5',
-    'height' => '70',
-    'width' => '80',
-    'length' => '50'
-
-
-];
