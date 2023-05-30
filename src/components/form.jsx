@@ -101,7 +101,6 @@ export default function Form() {
     formdata.Length = Length;
     formdata.size = Size;
     formdata.Weight = Weight
-    console.log(formdata);
     axios({
       method: 'post',
       url: 'http://localhost/scandiweb%20api/',
