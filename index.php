@@ -143,7 +143,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && $_POST['datatype'] === "delete") {
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $products = $repository->getallproducts($db);
-    echo json_encode($products);
 }
 $data = [
     'sku' => 'adsadsadsad',
@@ -156,6 +155,3 @@ $data = [
 
 
 ];
-
-//$newbook = Product::SaveinDb($data, $db, $repository);
-//$product = new DVD($data['sku'], $data['name'], $data['type'], $data['price'], $data['size']);

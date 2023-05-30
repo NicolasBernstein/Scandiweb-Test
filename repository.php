@@ -41,7 +41,6 @@ class Repository
 
     public function Addindb($con, $sku, $name, $price, $type, $size, $weight, $height, $width, $length)
     {
-        echo "ADDED IN DATABASE";
         $pre = mysqli_prepare($con->con, "INSERT INTO products(sku, name, price, type, size, weight, height, width, length) VALUES (?,?,?,?,?,?,?,?,?)");
         $pre->bind_param("sssssssss", $sku, $name, $price, $type, $size, $weight, $height, $width, $length);
         $pre->execute();
