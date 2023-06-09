@@ -108,6 +108,7 @@ export default function Form() {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     }).then(response => {
       console.log(response.data);
+      console.log(formdata);
 
       navigate('/')
     })

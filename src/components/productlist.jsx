@@ -3,14 +3,23 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 export default function ProductList() {
-  const [isCheckboxactive, SetIsCheckboxactive] = useState({});
+  const [isCheckboxActive, SetIsCheckboxActive] = useState({});
   const [cardsdata, setCardsdata] = useState([]);
   function handleCardClick(cardId, ev) {
-    SetIsCheckboxactive((prevState) => ({
+    SetIsCheckboxActive((prevState) => ({
       ...prevState,
       [cardId]: !prevState[cardId],
     }));
-    ev.currentTarget.querySelector('.cardcheckbox').checked = !isCheckboxactive[cardId];
+    ev.currentTarget.querySelector('.cardcheckbox').checked = !isCheckboxActive[cardId];
+    console.log(ev.currentTarget);
+    console.log(ev.currentTarget.querySelector('input'));
+    if (ev.currentTarget.querySelector('input').classList.contains('delete-checkbox')) {
+      ev.currentTarget.querySelector('input').classList.add('delete');
+      ev.currentTarget.querySelector('input').classList.remove('delete-checkbox');
+    } else {
+      ev.currentTarget.querySelector('input').classList.remove('delete');
+      ev.currentTarget.querySelector('input').classList.add('delete-checkbox');
+    }
   }
   useEffect(() => {
     function loadData() {
@@ -51,7 +60,7 @@ export default function ProductList() {
 
       <div key={card.id} id={card.sku} className='card text-white border border-dark position-relative' style={{ width: 12 + "rem", marginLeft: 1.5 + "rem" }}>
         <div className={`card-body d-flex flex-column align-items-center`} onClick={(ev) => handleCardClick(card.id, ev)} >
-          <input className={`form-check-input position-absolute align-self-start cardcheckbox opacity-100  ${isCheckboxactive[card.id] ? "delete" : "delete-checkbox"} `} type="checkbox" value="" disabled></input>
+          <input className={`form-check-input position-absolute align-self-start cardcheckbox opacity-100 delete-checkbox`} /*  ${isCheckboxActive[card.id] ? "delete" : "delete-checkbox"}*/ type="checkbox" value="" disabled></input>
           <p className="card-text text-black text-center productext" style={{ whiteSpace: "nowrap", width: 75 + "%", fontSize: 90 + "%" }}>{card.sku}</p>
           <p className="card-text text-black productext">{card.name}</p>
           <p className="card-text text-black productext">{card.price} $</p>

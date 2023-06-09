@@ -13,17 +13,23 @@ export default function Navbar() {
     var queryall = document.querySelectorAll(".delete");
     queryall.forEach(el => {
       var sku = el.closest('.card').getAttribute("id");
-      axios({
-        method: 'POST',
-        url: 'http://localhost/scandiweb%20api/',
-        data: new URLSearchParams({ "datatype": 'delete', "sku": sku }),
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).then(response => {
-        el.parentNode.parentNode.remove();
-      })
-        .catch(error => {
-          console.log(error);
-        });
+      console.log(sku);
+      if (el.classList.contains('delete')) {
+        console.log(el);
+        axios({
+          method: 'POST',
+          url: 'http://localhost/scandiweb%20api/',
+          data: new URLSearchParams({ "datatype": 'delete', "sku": sku }),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(response => {
+          el.parentNode.parentNode.remove();
+        })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        console.log('not class');
+      }
     })
   }
 
